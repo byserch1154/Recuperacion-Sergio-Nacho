@@ -1,0 +1,514 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+CAUTION: Do not modify this file unless you know what you are doing.
+ Unexpected results may occur if the code is changed deliberately.
+-->
+<dbmodel pgmodeler-ver="0.9.4" use-changelog="false" last-position="1146,0" last-zoom="0.85" max-obj-count="13"
+	 default-schema="public" default-owner="postgres"
+	 layers="Default layer"
+	 active-layers="0"
+	 layer-name-colors="#000000"
+	 layer-rect-colors="#b4b4b4"
+	 show-layer-names="false" show-layer-rects="false">
+<database name="new_database" is-template="false" allow-conns="true">
+</database>
+
+<schema name="public" layers="0" fill-color="#e1e1e1" sql-disabled="true">
+</schema>
+
+<table name="clientes" layers="0" collapse-mode="2" max-obj-count="7" z-value="0">
+	<schema name="public"/>
+	<role name="postgres"/>
+	<position x="1900" y="560"/>
+	<column name="id_cliente" not-null="true">
+		<type name="serial" length="0"/>
+	</column>
+	<column name="nombre" not-null="true">
+		<type name="varchar" length="100"/>
+	</column>
+	<column name="email" not-null="true">
+		<type name="varchar" length="150"/>
+	</column>
+	<column name="telefono">
+		<type name="varchar" length="20"/>
+	</column>
+	<column name="tipo" not-null="true">
+		<type name="varchar" length="20"/>
+	</column>
+	<column name="fecha_alta" not-null="true" default-value="current_date">
+		<type name="date" length="0"/>
+	</column>
+	<constraint name="uq_clientes_email" type="uq-constr" table="public.clientes">
+		<columns names="email" ref-type="src-columns"/>
+	</constraint>
+	<constraint name="clientes_pk" type="pk-constr" table="public.clientes">
+		<columns names="id_cliente" ref-type="src-columns"/>
+	</constraint>
+</table>
+
+<table name="modelos" layers="0" collapse-mode="2" max-obj-count="6" z-value="0">
+	<schema name="public"/>
+	<role name="postgres"/>
+	<position x="2940" y="840"/>
+	<column name="id_modelo" not-null="true">
+		<type name="serial" length="0"/>
+	</column>
+	<column name="codigo" not-null="true">
+		<type name="varchar" length="20"/>
+	</column>
+	<column name="nombre" not-null="true">
+		<type name="varchar" length="100"/>
+	</column>
+	<column name="categoria" not-null="true">
+		<type name="varchar" length="50"/>
+	</column>
+	<column name="precio_base" not-null="true">
+		<type name="numeric" length="8" precision="2"/>
+	</column>
+	<constraint name="uq_modelos_codigo" type="uq-constr" table="public.modelos">
+		<columns names="codigo" ref-type="src-columns"/>
+	</constraint>
+	<constraint name="ck_modelos_precio" type="ck-constr" table="public.modelos">
+			<expression><![CDATA[precio_base > 0]]></expression>
+	</constraint>
+	<constraint name="modelos_pk" type="pk-constr" table="public.modelos">
+		<columns names="id_modelo" ref-type="src-columns"/>
+	</constraint>
+</table>
+
+<table name="roles" layers="0" collapse-mode="2" max-obj-count="2" z-value="0">
+	<schema name="public"/>
+	<role name="postgres"/>
+	<position x="2620" y="420"/>
+	<column name="id_rol" not-null="true">
+		<type name="serial" length="0"/>
+	</column>
+	<column name="nombre" not-null="true">
+		<type name="varchar" length="30"/>
+	</column>
+	<constraint name="uq_roles_nombre" type="uq-constr" table="public.roles">
+		<columns names="nombre" ref-type="src-columns"/>
+	</constraint>
+	<constraint name="roles_pk" type="pk-constr" table="public.roles">
+		<columns names="id_rol" ref-type="src-columns"/>
+	</constraint>
+</table>
+
+<table name="permisos" layers="0" collapse-mode="2" max-obj-count="4" z-value="0">
+	<schema name="public"/>
+	<role name="postgres"/>
+	<position x="3000" y="380"/>
+	<column name="id_permiso" not-null="true">
+		<type name="serial" length="0"/>
+	</column>
+	<column name="id_rol" not-null="true">
+		<type name="integer" length="0"/>
+	</column>
+	<column name="operacion" not-null="true">
+		<type name="varchar" length="30"/>
+	</column>
+	<column name="permitido" not-null="true">
+		<type name="boolean" length="0"/>
+	</column>
+	<constraint name="uq_permisos_rol_operacion" type="uq-constr" table="public.permisos">
+		<columns names="id_rol,operacion" ref-type="src-columns"/>
+	</constraint>
+	<constraint name="permisos_pk" type="pk-constr" table="public.permisos">
+		<columns names="id_permiso" ref-type="src-columns"/>
+	</constraint>
+</table>
+
+<table name="usuarios" layers="0" collapse-mode="2" max-obj-count="7" z-value="0">
+	<schema name="public"/>
+	<role name="postgres"/>
+	<position x="1600" y="220"/>
+	<column name="id_usuario" not-null="true">
+		<type name="serial" length="0"/>
+	</column>
+	<column name="username" not-null="true">
+		<type name="varchar" length="50"/>
+	</column>
+	<column name="password_hash" not-null="true">
+		<type name="varchar" length="100"/>
+	</column>
+	<column name="id_rol" not-null="true">
+		<type name="integer" length="0"/>
+	</column>
+	<column name="activo" not-null="true" default-value="true">
+		<type name="boolean" length="0"/>
+	</column>
+	<column name="fecha_creacion" not-null="true" default-value="now()">
+		<type name="timestamp" length="0"/>
+	</column>
+	<constraint name="uq_usuarios_username" type="uq-constr" table="public.usuarios">
+		<columns names="username" ref-type="src-columns"/>
+	</constraint>
+	<constraint name="usuarios_pk" type="pk-constr" table="public.usuarios">
+		<columns names="id_usuario" ref-type="src-columns"/>
+	</constraint>
+</table>
+
+<table name="stock" layers="0" collapse-mode="2" max-obj-count="6" z-value="0">
+	<schema name="public"/>
+	<role name="postgres"/>
+	<position x="2420" y="1140"/>
+	<column name="id_stock" not-null="true">
+		<type name="serial" length="0"/>
+	</column>
+	<column name="id_modelo" not-null="true">
+		<type name="integer" length="0"/>
+	</column>
+	<column name="talla" not-null="true">
+		<type name="integer" length="0"/>
+	</column>
+	<column name="stock_disponible" not-null="true" default-value="0">
+		<type name="integer" length="0"/>
+	</column>
+	<column name="fecha_corte" not-null="true" default-value="now()">
+		<type name="timestamp" length="0"/>
+	</column>
+	<constraint name="uq_stock_modelo_talla" type="uq-constr" table="public.stock">
+		<columns names="id_modelo,talla" ref-type="src-columns"/>
+	</constraint>
+	<constraint name="ck_stock_cantidad" type="ck-constr" table="public.stock">
+			<expression><![CDATA[stock_disponible >= 0]]></expression>
+	</constraint>
+	<constraint name="ck_stock_talla" type="ck-constr" table="public.stock">
+			<expression><![CDATA[talla BETWEEN 38 AND 46]]></expression>
+	</constraint>
+	<constraint name="stock_pk" type="pk-constr" table="public.stock">
+		<columns names="id_stock" ref-type="src-columns"/>
+	</constraint>
+</table>
+
+<table name="pedidos" layers="0" collapse-mode="2" max-obj-count="9" z-value="0">
+	<schema name="public"/>
+	<role name="postgres"/>
+	<position x="1560" y="860"/>
+	<column name="id_pedido" not-null="true">
+		<type name="serial" length="0"/>
+	</column>
+	<column name="referencia" default-value="'SO' || lpad(id_pedido::text, 3, '0')" generated="true">
+		<type name="varchar" length="10"/>
+	</column>
+	<column name="id_cliente" not-null="true">
+		<type name="integer" length="0"/>
+	</column>
+	<column name="fecha" not-null="true" default-value="current_date">
+		<type name="date" length="0"/>
+	</column>
+	<column name="estado" not-null="true" default-value="'pendiente'">
+		<type name="varchar" length="20"/>
+	</column>
+	<column name="tipo" not-null="true" default-value="'estandar'">
+		<type name="varchar" length="20"/>
+	</column>
+	<column name="total" not-null="true" default-value="0">
+		<type name="numeric" length="10" precision="2"/>
+	</column>
+	<column name="creado_por">
+		<type name="integer" length="0"/>
+	</column>
+	<constraint name="uq_pedidos_referencia" type="uq-constr" table="public.pedidos">
+		<columns names="referencia" ref-type="src-columns"/>
+	</constraint>
+	<constraint name="ck_pedidos_estado" type="ck-constr" table="public.pedidos">
+			<expression><![CDATA[estado IN ('pendiente', 'confirmado', 'entregado', 'cancelado')]]></expression>
+	</constraint>
+	<constraint name="ck_pedidos_tipo" type="ck-constr" table="public.pedidos">
+			<expression><![CDATA[tipo IN ('estandar', 'custom')]]></expression>
+	</constraint>
+	<constraint name="ck_pedidos_total" type="ck-constr" table="public.pedidos">
+			<expression><![CDATA[total >= 0]]></expression>
+	</constraint>
+	<constraint name="pedidos_pk" type="pk-constr" table="public.pedidos">
+		<columns names="id_pedido" ref-type="src-columns"/>
+	</constraint>
+</table>
+
+<table name="lineas_pedido" layers="0" collapse-mode="2" max-obj-count="15" z-value="0">
+	<schema name="public"/>
+	<role name="postgres"/>
+	<position x="2040" y="900"/>
+	<column name="id_linea" not-null="true">
+		<type name="serial" length="0"/>
+	</column>
+	<column name="id_pedido" not-null="true">
+		<type name="integer" length="0"/>
+	</column>
+	<column name="id_modelo" not-null="true">
+		<type name="integer" length="0"/>
+	</column>
+	<column name="talla" not-null="true">
+		<type name="integer" length="0"/>
+	</column>
+	<column name="cantidad" not-null="true">
+		<type name="integer" length="0"/>
+	</column>
+	<column name="precio_unitario" not-null="true">
+		<type name="numeric" length="8" precision="2"/>
+	</column>
+	<column name="color_cuerpo">
+		<type name="varchar" length="20"/>
+	</column>
+	<column name="color_franja">
+		<type name="varchar" length="20"/>
+	</column>
+	<column name="color_puntera">
+		<type name="varchar" length="20"/>
+	</column>
+	<column name="color_talon">
+		<type name="varchar" length="20"/>
+	</column>
+	<column name="color_suela">
+		<type name="varchar" length="20"/>
+	</column>
+	<column name="color_cordones">
+		<type name="varchar" length="20"/>
+	</column>
+	<column name="texto_suela">
+		<type name="varchar" length="12"/>
+	</column>
+	<constraint name="ck_lineas_cantidad" type="ck-constr" table="public.lineas_pedido">
+			<expression><![CDATA[cantidad > 0]]></expression>
+	</constraint>
+	<constraint name="ck_lineas_talla" type="ck-constr" table="public.lineas_pedido">
+			<expression><![CDATA[talla BETWEEN 38 AND 46]]></expression>
+	</constraint>
+	<constraint name="ck_lineas_precio" type="ck-constr" table="public.lineas_pedido">
+			<expression><![CDATA[precio_unitario >= 0]]></expression>
+	</constraint>
+	<constraint name="lineas_pedido_pk" type="pk-constr" table="public.lineas_pedido">
+		<columns names="id_linea" ref-type="src-columns"/>
+	</constraint>
+</table>
+
+<table name="log_eventos" layers="0" collapse-mode="2" max-obj-count="8" z-value="0">
+	<schema name="public"/>
+	<role name="postgres"/>
+	<position x="2440" y="600"/>
+	<column name="id_evento" not-null="true">
+		<type name="serial" length="0"/>
+	</column>
+	<column name="fecha" not-null="true" default-value="now()">
+		<type name="timestamp" length="0"/>
+	</column>
+	<column name="tabla" not-null="true">
+		<type name="varchar" length="50"/>
+	</column>
+	<column name="operacion" not-null="true">
+		<type name="varchar" length="10"/>
+	</column>
+	<column name="id_registro" not-null="true">
+		<type name="varchar" length="20"/>
+	</column>
+	<column name="id_usuario" not-null="true">
+		<type name="integer" length="0"/>
+	</column>
+	<column name="resumen" not-null="true">
+		<type name="text" length="0"/>
+	</column>
+	<constraint name="ck_log_operacion" type="ck-constr" table="public.log_eventos">
+			<expression><![CDATA[operacion IN ('INSERT', 'UPDATE', 'DELETE')]]></expression>
+	</constraint>
+	<constraint name="log_eventos_pk" type="pk-constr" table="public.log_eventos">
+		<columns names="id_evento" ref-type="src-columns"/>
+	</constraint>
+</table>
+
+<table name="colores_catalogo" layers="0" collapse-mode="2" max-obj-count="15" z-value="0">
+	<schema name="public"/>
+	<role name="postgres"/>
+	<position x="3060" y="1180"/>
+	<column name="id_color" not-null="true">
+		<type name="serial" length="0"/>
+	</column>
+	<column name="id_modelo" not-null="true">
+		<type name="integer" length="0"/>
+	</column>
+	<column name="codigo" not-null="true">
+		<type name="varchar" length="50"/>
+	</column>
+	<column name="nombre" not-null="true">
+		<type name="varchar" length="50"/>
+	</column>
+	<column name="orden" not-null="true" default-value="1">
+		<type name="integer" length="0"/>
+	</column>
+	<column name="color_cuerpo" not-null="true">
+		<type name="varchar" length="20"/>
+	</column>
+	<column name="color_franja" not-null="true">
+		<type name="varchar" length="20"/>
+	</column>
+	<column name="color_puntera" not-null="true">
+		<type name="varchar" length="20"/>
+	</column>
+	<column name="color_talon" not-null="true">
+		<type name="varchar" length="20"/>
+	</column>
+	<column name="color_suela" not-null="true">
+		<type name="varchar" length="20"/>
+	</column>
+	<column name="color_cordones" not-null="true">
+		<type name="varchar" length="20"/>
+	</column>
+	<column name="color_detalle" not-null="true">
+		<type name="varchar" length="20"/>
+	</column>
+	<column name="activo" not-null="true" default-value="true">
+		<type name="boolean" length="0"/>
+	</column>
+	<constraint name="uq_colores_codigo" type="uq-constr" table="public.colores_catalogo">
+		<columns names="codigo" ref-type="src-columns"/>
+	</constraint>
+	<constraint name="colores_catalogo_pk" type="pk-constr" table="public.colores_catalogo">
+		<columns names="id_color" ref-type="src-columns"/>
+	</constraint>
+</table>
+
+<table name="pedidos_odoo" layers="0" collapse-mode="2" max-obj-count="7" z-value="0">
+	<schema name="public"/>
+	<role name="postgres"/>
+	<position x="1700" y="1360"/>
+	<column name="id_pedido" not-null="true">
+		<type name="integer" length="0"/>
+	</column>
+	<column name="pedido_odoo">
+		<type name="varchar" length="20"/>
+	</column>
+	<column name="id_odoo">
+		<type name="integer" length="0"/>
+	</column>
+	<column name="estado" not-null="true">
+		<type name="varchar" length="10"/>
+	</column>
+	<column name="mensaje">
+		<type name="text" length="0"/>
+	</column>
+	<column name="actualizado" not-null="true" default-value="now()">
+		<type name="timestamp" length="0"/>
+	</column>
+	<constraint name="ck_odoo_estado" type="ck-constr" table="public.pedidos_odoo">
+			<expression><![CDATA[estado IN ('enviado', 'error')]]></expression>
+	</constraint>
+	<constraint name="pedidos_odoo_pk" type="pk-constr" table="public.pedidos_odoo">
+		<columns names="id_pedido" ref-type="src-columns"/>
+	</constraint>
+</table>
+
+<constraint name="fk_permisos_roles" type="fk-constr" comparison-type="MATCH SIMPLE"
+	 upd-action="NO ACTION" del-action="NO ACTION" ref-table="public.roles" table="public.permisos">
+	<columns names="id_rol" ref-type="src-columns"/>
+	<columns names="id_rol" ref-type="dst-columns"/>
+</constraint>
+
+<constraint name="fk_usuarios_roles" type="fk-constr" comparison-type="MATCH SIMPLE"
+	 upd-action="NO ACTION" del-action="NO ACTION" ref-table="public.roles" table="public.usuarios">
+	<columns names="id_rol" ref-type="src-columns"/>
+	<columns names="id_rol" ref-type="dst-columns"/>
+</constraint>
+
+<constraint name="fk_stock_modelos" type="fk-constr" comparison-type="MATCH SIMPLE"
+	 upd-action="NO ACTION" del-action="NO ACTION" ref-table="public.modelos" table="public.stock">
+	<columns names="id_modelo" ref-type="src-columns"/>
+	<columns names="id_modelo" ref-type="dst-columns"/>
+</constraint>
+
+<constraint name="fk_pedidos_clientes" type="fk-constr" comparison-type="MATCH SIMPLE"
+	 upd-action="NO ACTION" del-action="NO ACTION" ref-table="public.clientes" table="public.pedidos">
+	<columns names="id_cliente" ref-type="src-columns"/>
+	<columns names="id_cliente" ref-type="dst-columns"/>
+</constraint>
+
+<constraint name="fk_pedidos_usuarios" type="fk-constr" comparison-type="MATCH SIMPLE"
+	 upd-action="NO ACTION" del-action="NO ACTION" ref-table="public.usuarios" table="public.pedidos">
+	<columns names="creado_por" ref-type="src-columns"/>
+	<columns names="id_usuario" ref-type="dst-columns"/>
+</constraint>
+
+<constraint name="fk_lineas_pedidos" type="fk-constr" comparison-type="MATCH SIMPLE"
+	 upd-action="NO ACTION" del-action="NO ACTION" ref-table="public.pedidos" table="public.lineas_pedido">
+	<columns names="id_pedido" ref-type="src-columns"/>
+	<columns names="id_pedido" ref-type="dst-columns"/>
+</constraint>
+
+<constraint name="fk_lineas_modelos" type="fk-constr" comparison-type="MATCH SIMPLE"
+	 upd-action="NO ACTION" del-action="NO ACTION" ref-table="public.modelos" table="public.lineas_pedido">
+	<columns names="id_modelo" ref-type="src-columns"/>
+	<columns names="id_modelo" ref-type="dst-columns"/>
+</constraint>
+
+<constraint name="fk_log_usuarios" type="fk-constr" comparison-type="MATCH SIMPLE"
+	 upd-action="NO ACTION" del-action="NO ACTION" ref-table="public.usuarios" table="public.log_eventos">
+	<columns names="id_usuario" ref-type="src-columns"/>
+	<columns names="id_usuario" ref-type="dst-columns"/>
+</constraint>
+
+<constraint name="fk_colores_modelos" type="fk-constr" comparison-type="MATCH SIMPLE"
+	 upd-action="NO ACTION" del-action="NO ACTION" ref-table="public.modelos" table="public.colores_catalogo">
+	<columns names="id_modelo" ref-type="src-columns"/>
+	<columns names="id_modelo" ref-type="dst-columns"/>
+</constraint>
+
+<constraint name="fk_odoo_pedidos" type="fk-constr" comparison-type="MATCH SIMPLE"
+	 upd-action="NO ACTION" del-action="NO ACTION" ref-table="public.pedidos" table="public.pedidos_odoo">
+	<columns names="id_pedido" ref-type="src-columns"/>
+	<columns names="id_pedido" ref-type="dst-columns"/>
+</constraint>
+
+<relationship name="rel_permisos_roles" type="relfk" layers="0"
+	 src-table="public.permisos"
+	 dst-table="public.roles" reference-fk="fk_permisos_roles"
+	 src-required="false" dst-required="true"/>
+
+<relationship name="rel_usuarios_roles" type="relfk" layers="0"
+	 src-table="public.usuarios"
+	 dst-table="public.roles" reference-fk="fk_usuarios_roles"
+	 src-required="false" dst-required="true"/>
+
+<relationship name="rel_stock_modelos" type="relfk" layers="0"
+	 src-table="public.stock"
+	 dst-table="public.modelos" reference-fk="fk_stock_modelos"
+	 src-required="false" dst-required="true"/>
+
+<relationship name="rel_pedidos_clientes" type="relfk" layers="0"
+	 src-table="public.pedidos"
+	 dst-table="public.clientes" reference-fk="fk_pedidos_clientes"
+	 src-required="false" dst-required="true"/>
+
+<relationship name="rel_pedidos_usuarios" type="relfk" layers="0"
+	 src-table="public.pedidos"
+	 dst-table="public.usuarios" reference-fk="fk_pedidos_usuarios"
+	 src-required="false" dst-required="false"/>
+
+<relationship name="rel_lineas_pedido_pedidos" type="relfk" layers="0"
+	 src-table="public.lineas_pedido"
+	 dst-table="public.pedidos" reference-fk="fk_lineas_pedidos"
+	 src-required="false" dst-required="true"/>
+
+<relationship name="rel_lineas_pedido_modelos" type="relfk" layers="0"
+	 src-table="public.lineas_pedido"
+	 dst-table="public.modelos" reference-fk="fk_lineas_modelos"
+	 src-required="false" dst-required="true"/>
+
+<relationship name="rel_log_eventos_usuarios" type="relfk" layers="0"
+	 src-table="public.log_eventos"
+	 dst-table="public.usuarios" reference-fk="fk_log_usuarios"
+	 src-required="false" dst-required="true"/>
+
+<relationship name="rel_colores_catalogo_modelos" type="relfk" layers="0"
+	 src-table="public.colores_catalogo"
+	 dst-table="public.modelos" reference-fk="fk_colores_modelos"
+	 src-required="false" dst-required="true"/>
+
+<relationship name="rel_pedidos_odoo_pedidos" type="relfk" layers="0"
+	 src-table="public.pedidos_odoo"
+	 dst-table="public.pedidos" reference-fk="fk_odoo_pedidos"
+	 src-required="false" dst-required="true">
+	<label ref-type="name-label">
+		<position x="75.4925" y="-24.9323"/>
+	</label>
+</relationship>
+
+</dbmodel>
